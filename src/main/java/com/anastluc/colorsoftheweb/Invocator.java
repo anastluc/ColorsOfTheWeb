@@ -21,24 +21,21 @@ public class Invocator {
 
 
 //        long[][] bins = h.calculateBins();
-//        DatabaseManager dm = new DatabaseManager();
+        DatabaseManager dm = new DatabaseManager();
 //                dm.test();
 //        dm.storeImageFreqsToDb("no image storing at the moment - dull value", bins, h.getTotalPixels());
 
         long[][][] rgbBin = h.calculateRGBBins();
 
-        for (int i = 0; i < 16; i++) {
-            for (int j = 0; j < 16; j++) {
-                for (int k = 0; k < 16; k++) {
-                    System.out.println("["+i+","+j+","+k+"]:"+rgbBin[i][j][k]);
-                }
-            }
-        }
-
-
-
-
-
+//        for (int i = 0; i < 16; i++) {
+//            for (int j = 0; j < 16; j++) {
+//                for (int k = 0; k < 16; k++) {
+//                    System.out.println("["+i+","+j+","+k+"]:"+rgbBin[i][j][k]);
+//                }
+//            }
+//        }
+        
+        dm.storeImageRGBFreqsToDb("no image storing at the moment - dull value", rgbBin, h.getTotalPixels());
 
     }
 }
