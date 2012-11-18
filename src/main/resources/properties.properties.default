@@ -1,0 +1,5 @@
+SERVER_NAME = localhost:3306
+DATABASE    = colorsotw
+USERNAME    = colorsotw
+PASSWORD    = xxxxxxxxx
+        
