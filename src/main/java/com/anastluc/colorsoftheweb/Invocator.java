@@ -4,6 +4,7 @@
  */
 package com.anastluc.colorsoftheweb;
 
+import com.anastluc.colorsoftheweb.data.DatabaseManager;
 import com.anastluc.colorsoftheweb.image.Histogram;
 
 /**
@@ -12,7 +13,15 @@ import com.anastluc.colorsoftheweb.image.Histogram;
  */
 public class Invocator {
     public static void main(String[] args){
-        Histogram h = new Histogram();
-        h.calculate();
+        
+        String testFile = "c:\\Selenium\\screenshot.png";
+        
+        Histogram h = new Histogram(testFile);
+        long[][] bins = h.calculateBins();
+        DatabaseManager dm = new DatabaseManager();
+//        dm.test();
+        
+        
+        dm.storeImageFreqsToDb("no image storing at the moment - dull value", bins, h.getTotalPixels());
     }
 }

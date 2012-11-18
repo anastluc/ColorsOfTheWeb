@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  *
@@ -18,21 +19,31 @@ import javax.imageio.ImageIO;
  */
 public class Histogram {
 
+    private String imageFilePath;
+    private BufferedImage bi;
+    
     public Histogram() {
     }
-
-    public void calculate() {
-        BufferedImage bi = null;
-        try {
-            bi = ImageIO.read(new File("c:\\Selenium\\screenshot.png"));
-        } catch (IOException ex) {
-            Logger.getLogger(Histogram.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    
+    public Histogram(String imageFilePath){
+        this.imageFilePath = imageFilePath;
         
+        try {
+            bi = ImageIO.read(new File(imageFilePath));
+        } catch (IOException ex) {
+            System.err.println("Cannot read file"+ex.getMessage());
+        }
+    }
+
+    public long[][] calculateBins() {
+        
+        StopWatch sw = new StopWatch();
+        sw.start();
         int height = bi.getHeight();
         int width  = bi.getWidth();
         Raster raster = bi.getRaster();
-        int [][]bins = new int[3][256];
+        long [][]bins = new long[3][256];
+        
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 bins[0][raster.getSample(i,j,0)]++;
@@ -41,12 +52,16 @@ public class Histogram {
             }            
         }
         
-        for (int i = 0; i < 256; i++) {
-            System.out.print("("+bins[0][i]+","+bins[1][i]+","+bins[2][i]+") ");
-            if (i%16==0){
-                System.out.println("");
-            }
-        }
+        sw.stop();
+        System.out.println("Calculation took:"+sw.getTime()+" ms");
+        
+        return bins;
         
     }
+    
+    public long getTotalPixels(){
+        return bi.getHeight()*bi.getWidth();
+    }
+    
+    
 }
