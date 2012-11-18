@@ -4,8 +4,8 @@
  */
 package com.anastluc.colorsoftheweb;
 
-import com.anastluc.colorsoftheweb.data.DatabaseManager;
-import com.anastluc.colorsoftheweb.image.Histogram;
+import com.anastluc.colorsoftheweb.data.AlexaRetriever;
+import java.util.ArrayList;
 
 /**
  *
@@ -15,18 +15,18 @@ public class Invocator {
 
     public static void main(String[] args) {
 
-        String testFile = "c:\\Selenium\\screenshot.png";
-
-        Histogram h = new Histogram(testFile);
-
-
+//        String testFile = "c:\\Selenium\\screenshot.png";
+//
+//        Histogram h = new Histogram(testFile);
+//
+//
 //        long[][] bins = h.calculateBins();
-        DatabaseManager dm = new DatabaseManager();
+//        DatabaseManager dm = new DatabaseManager();
 //                dm.test();
 //        dm.storeImageFreqsToDb("no image storing at the moment - dull value", bins, h.getTotalPixels());
-
-        long[][][] rgbBin = h.calculateRGBBins();
-
+//
+//        long[][][] rgbBin = h.calculateRGBBins();
+//
 //        for (int i = 0; i < 16; i++) {
 //            for (int j = 0; j < 16; j++) {
 //                for (int k = 0; k < 16; k++) {
@@ -34,8 +34,18 @@ public class Invocator {
 //                }
 //            }
 //        }
+//        
+//        dm.storeImageRGBFreqsToDb("no image storing at the moment - dull value", rgbBin, h.getTotalPixels());
+//
         
-        dm.storeImageRGBFreqsToDb("no image storing at the moment - dull value", rgbBin, h.getTotalPixels());
-
+        AlexaRetriever r = new AlexaRetriever();
+        r.downloadAndStore();
+        r.extractZip();
+        ArrayList<String> sites = r.retrieve();
+        
+        for (String site : sites){
+            System.out.println(""+site);
+        }
+        
     }
 }
