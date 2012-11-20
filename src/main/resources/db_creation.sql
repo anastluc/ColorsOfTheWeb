@@ -22,3 +22,9 @@ CREATE TABLE IF NOT EXISTS `rgb_frequencies` (
   `frequency` int(11) unsigned NOT NULL,
   `frequency_perc` double unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `filenames` (  
+    `id` int(11) NOT NULL AUTO_INCREMENT,  
+    `filename` varchar(200) NOT NULL,  
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1

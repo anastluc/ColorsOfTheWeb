@@ -3,6 +3,7 @@ package com.anastluc.colorsoftheweb.data;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Logger;
 import org.apache.commons.lang.time.StopWatch;
 
@@ -93,17 +94,36 @@ public class DatabaseManager {
         StopWatch sw = new StopWatch();
         sw.start();
 
+        String insert_sql = "INSERT INTO filenames(filename) values(?)";
+         
+        
         StringBuilder sql = new StringBuilder("INSERT INTO rgb_frequencies (id_image, r_value, g_value, b_value, frequency, frequency_perc) VALUES (?, ?, ?, ?, ?, ?)");
 
+        PreparedStatement ps_ins = null;
         PreparedStatement ps = null;
         try {
+        
+            ps_ins = mySqlConfig.getConnection().prepareStatement(insert_sql, Statement.RETURN_GENERATED_KEYS);
+        
+            ps_ins.setString(1, imageFileName);
+            
+            ps_ins.executeUpdate();
+            
+            ResultSet rs = ps_ins.getGeneratedKeys();
+            Integer rid = null;
+            if (rs.next()) {
+                rid = rs.getInt(1);
+            }else {
+                System.out.println("no resultset!");
+            }
+            
             ps = mySqlConfig.getConnection().prepareStatement(sql.toString());
 
             for (int i = 0; i < 16; i++) {
                 for (int j = 0; j < 16; j++) {
                     for (int k = 0; k < 16; k++) {
 
-                        ps.setInt(1, 1);
+                        ps.setInt(1, rid);
                         ps.setLong(2, i);
                         ps.setLong(3, j);
                         ps.setLong(4, k);

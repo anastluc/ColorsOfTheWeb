@@ -5,7 +5,11 @@
 package com.anastluc.colorsoftheweb;
 
 import com.anastluc.colorsoftheweb.data.AlexaRetriever;
+import com.anastluc.colorsoftheweb.data.DatabaseManager;
+import com.anastluc.colorsoftheweb.image.Histogram;
+import com.anastluc.colorsoftheweb.selenium.Screenshoter;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  *
@@ -38,14 +42,31 @@ public class Invocator {
 //        dm.storeImageRGBFreqsToDb("no image storing at the moment - dull value", rgbBin, h.getTotalPixels());
 //
         
+        Calendar cal = Calendar.getInstance();
+        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+        int month = cal.get(Calendar.MONTH);
+        int year = cal.get(Calendar.YEAR);
+
+        String BASE_DIRECTORY = "c:\\cotw\\";
+        String archive_directory = BASE_DIRECTORY + year + "_" + month + "_" + dayOfMonth;
+        
+        Screenshoter ss = new Screenshoter();
         AlexaRetriever r = new AlexaRetriever();
         r.downloadAndStore();
         r.extractZip();
-        ArrayList<String> sites = r.retrieve();
+        ArrayList<String> sites = r.retrieve(250);
+        DatabaseManager dm = new DatabaseManager();
         
         for (String site : sites){
-            System.out.println(""+site);
+            ss.take(site);
+            String shotFile = archive_directory+"/"+site+".png";
+            Histogram h = new Histogram(shotFile);
+            long[][][] rgbBin = h.calculateRGBBins();
+            dm.storeImageRGBFreqsToDb(shotFile, rgbBin, h.getTotalPixels());            
         }
+        
+        
+        
         
     }
 }
