@@ -14,10 +14,10 @@ import java.util.Properties;
  */
 public class MySQLConfig {
 
-    public static String serverName;// = "localhost:3306";
-    public static String database;// = "core";
-    public static String username;// = "root";
-    public static String password;// = "localhost";//abcd";
+    public static String serverName;
+    public static String database;
+    public static String username;
+    public static String password;
     
     private Connection connection;
 
